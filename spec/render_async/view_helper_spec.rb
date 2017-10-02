@@ -21,7 +21,8 @@ describe RenderAsync::ViewHelper do
           {
             :container_id => /render_async_/,
             :path => "users",
-            :html_options => {},
+            :html_options => nil,
+            :event_name => nil,
             :placeholder => nil
           }
         )
@@ -30,7 +31,7 @@ describe RenderAsync::ViewHelper do
       end
     end
 
-    context "called with html_options" do
+    context "called with html hash inside options hash" do
       it "renders render_async partial with proper parameters" do
         expect(helper).to receive(:render).with(
           "render_async/render_async",
@@ -38,11 +39,29 @@ describe RenderAsync::ViewHelper do
             :container_id => /render_async_/,
             :path => "users",
             :html_options => { :nonce => "jkg1935safd" },
+            :event_name => nil,
             :placeholder => nil
           }
         )
 
-        helper.render_async("users", :nonce => "jkg1935safd")
+        helper.render_async("users", :html => { :nonce => "jkg1935safd" })
+      end
+    end
+
+    context "event_name is given inside options hash" do
+      it "renders render_async partial with proper parameters" do
+        expect(helper).to receive(:render).with(
+          "render_async/render_async",
+          {
+            :container_id => /render_async_/,
+            :path => "users",
+            :html_options => nil,
+            :event_name => "render_async_done",
+            :placeholder => nil
+          }
+        )
+
+        helper.render_async("users", :event_name => "render_async_done")
       end
     end
 
@@ -59,7 +78,8 @@ describe RenderAsync::ViewHelper do
           {
             :container_id => /render_async_/,
             :path => "users",
-            :html_options => {},
+            :html_options => nil,
+            :event_name => nil,
             :placeholder => placeholder
           }
         )

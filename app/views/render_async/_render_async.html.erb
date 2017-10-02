@@ -7,6 +7,10 @@
     (function($){
       $.ajax({ url: "<%= path %>" }).always(function(response) {
         $("#<%= container_id %>").replaceWith(response);
+
+        <% if event_name.present? %>
+          document.dispatchEvent(new Event("<%= event_name %>", response));
+        <% end %>
       });
     }(jQuery));
   <% end %>
